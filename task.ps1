@@ -137,6 +137,6 @@ $vms = Get-AzVm -ResourceGroupName $resourceGroupName | Where-Object {$_.Name.St
 foreach ($vm in $vms) {
     $nic = Get-AzNetworkInterface -ResourceGroupName $resourceGroupName | Where-Object {$_.Id -eq $vm.NetworkProfile.NetworkInterfaces.Id}     
     $ipCfg = $nic.IpConfigurations | Where-Object {$_.Primary} 
-    $ipCfg.LoadBalancerBackendAddressPools.Add($bepool)
+    $ipCfg.LoadBalancerBackendAddressPools.Add($actualBackendPool)
     Set-AzNetworkInterface -NetworkInterface $nic
 }
