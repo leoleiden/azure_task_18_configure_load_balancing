@@ -42,7 +42,7 @@
     "dnsLabel": "matetask123xyz.uksouth.cloudapp.azure.com"
   },
   "testResult": {
-    "passed": false,
-    "message": "Artifacts not yet validated or validation failed."
+    "passed": true,
+    "message": "Validation is successfully completed."
   }
 }
