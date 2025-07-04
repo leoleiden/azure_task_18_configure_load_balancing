@@ -122,6 +122,15 @@ $lbRule = New-AzLoadBalancerRuleConfig -Name "HttpRule" -FrontendIpConfiguration
 # Створення Load Balancer
 New-AzLoadBalancer -ResourceGroupName $resourceGroupName -Name $lbName -Location $location -FrontendIpConfiguration $lbFrontendIpConfig -BackendAddressPool $bepool -LoadBalancingRule $lbRule -Probe $healthProbe -Sku Standard
 
+# Отримайте фактичний об'єкт балансувальника навантаження після його розгортання.
+# Це необхідно, щоб отримати посилання на реальний, розгорнутий Backend Pool.
+$actualLoadBalancer = Get-AzLoadBalancer -ResourceGroupName $resourceGroupName -Name $lbName
+
+# Отримайте фактичний пул бекендів з розгорнутого балансувальника навантаження.
+# Припускаємо, що у вас лише один пул бекендів, тому використовуємо індекс [0].
+# Якщо пулів бекендів кілька, можна використовувати Where-Object за ім'ям:
+# $actualBackendPool = $actualLoadBalancer.BackendAddressPools | Where-Object {$_.Name -eq "BackendPool"}
+$actualBackendPool = $actualLoadBalancer.BackendAddressPools[0]
 
 Write-Host "Adding VMs to the backend pool"
 $vms = Get-AzVm -ResourceGroupName $resourceGroupName | Where-Object {$_.Name.StartsWith($webVmName)}
